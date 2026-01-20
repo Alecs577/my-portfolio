@@ -1,5 +1,6 @@
-import { Figtree, JetBrains_Mono } from "next/font/google";
+import { Figtree, JetBrains_Mono } from "next/font/google"; // Keep unused import if needed later or remove. Figtree is used.
 import "./globals.css";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 const figtree = Figtree({
   subsets: ["latin"],
@@ -7,18 +8,28 @@ const figtree = Figtree({
   variable: "--font-figtree",
 });
 
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-jetbrains-mono",
+});
+
+export const metadata = {
+  title: "Alex Berardozzi - Portfolio",
+  description: "Alex Berardozzi Dev",
+};
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Alex Berardozzi - Portfolio</title>
-        <meta name="description" content="Alex Berardozzi Dev" />
         <link rel="icon" href="/favicon.ico" />
       </head>
-      {/* Assegna il font di default al body, puoi cambiare in figtree o jetbrains mono */}
-      <body className={`${figtree.variable} font-sans-figtree`}>
-        {children}
+      <body className={`${figtree.variable} ${jetbrainsMono.variable} font-sans-figtree antialiased`}>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

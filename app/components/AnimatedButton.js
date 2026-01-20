@@ -17,7 +17,7 @@ export default function AnimatedButton({ label = "Click", href = "/", className 
     <motion.button
       ref={scope}
       onClick={handleClick}
-      className={`relative px-2 py-1 font-semibold text-white bg-transparent overflow-hidden cursor-pointer ${className}`}
+      className={`relative px-2 py-1 font-semibold text-[var(--foreground)] bg-transparent overflow-hidden cursor-pointer ${className}`}
       initial={{ y: 20, opacity: 0, scale: 1 }}
       animate={{ y: 0, opacity: 1, scale: 1, transition: { delay } }}
       onMouseEnter={() => setHovered(true)}
@@ -30,7 +30,7 @@ export default function AnimatedButton({ label = "Click", href = "/", className 
 
       {/* Linea sotto */}
       <motion.div
-        className="absolute left-0 bottom-0 h-[2px] bg-yellow-500"
+        className="absolute left-0 bottom-0 h-[2px] bg-[var(--accent)]"
         animate={{ width: hovered ? "100%" : "0%" }}
         transition={{ duration: 0.3 }}
       />

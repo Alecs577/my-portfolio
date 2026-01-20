@@ -8,15 +8,11 @@ export default function SocialLinks() {
     {
       component: <FaLinkedin />,
       href: "https://www.linkedin.com/in/alex-berardozzi-31449921a/",
-      color: "text-gray-300",
-      hoverColor: "hover:text-yellow-500",
       label: "LinkedIn"
     },
     {
       component: <FaGithub />,
       href: "https://github.com/Alecs577",
-      color: "text-gray-300",
-      hoverColor: "hover:text-yellow-500",
       label: "GitHub"
     }
   ];
@@ -29,7 +25,7 @@ export default function SocialLinks() {
           href={icon.href}
           target="_blank"
           rel="noopener noreferrer"
-          className={`text-4xl ${icon.color} ${icon.hoverColor} transition`}
+          className="text-4xl text-[var(--secondary)] hover:text-[var(--accent)] transition-colors duration-300"
           aria-label={icon.label}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

@@ -5,16 +5,16 @@ import { motion } from "motion/react";
 export default function SkillsCard() {
   return (
     <motion.div
-      className="cursor-default relative flex flex-col self-end items-center text-center p-8 mt-12 max-w-3xl rounded-2xl bg-gradient-to-br from-gray-900 via-gray-800 to-black shadow-2xl border border-gray-700"
+      className="glass cursor-default relative flex flex-col self-end items-center text-center p-8 mt-12 max-w-3xl rounded-2xl shadow-xl transition-all duration-300"
       initial={{ x: 50, opacity: 0 }}
       whileInView={{ x: 0, opacity: 1 }}
       transition={{ duration: 1, ease: "easeOut" }}
       viewport={{ once: true, amount: 0.2 }} // parte solo quando visibile
     >
       {/* Titolo con linea decorativa */}
-      <h2 className="text-5xl font-extrabold text-white mb-4 relative">
+      <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--foreground)] mb-4 relative">
         Skills
-        <span className="block w-20 h-1 bg-gradient-to-r from-yellow-400 to-pink-500 mx-auto mt-3 rounded-full"></span>
+        <span className="block w-20 h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] mx-auto mt-3 rounded-full"></span>
       </h2>
 
       {/* Griglia skills */}
