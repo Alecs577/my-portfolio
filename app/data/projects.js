@@ -1,4 +1,5 @@
 export const projects = [
+/*
     {
       title: "Portfolio Website",
       description: "My personal portfolio built with Next.js, Tailwind CSS, and motion animations.",
@@ -7,6 +8,7 @@ export const projects = [
       technologies: ["React", "Tailwind CSS", "JavaScript", "NextJs"],
       link: "/"
     },
+*/
 /*
     {
       title: "Pokemon Pocket App",
