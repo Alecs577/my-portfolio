@@ -59,7 +59,7 @@ export default async function ProjectPage({ params }) {
 
             <div className="glass p-8 rounded-2xl mb-8">
               <h2 className="text-2xl font-bold text-[var(--foreground)] mb-4">About</h2>
-              <p className="text-[var(--secondary)] text-lg leading-relaxed">
+              <p className="text-[var(--secondary)] text-lg leading-relaxed whitespace-pre-wrap">
                 {project.description}
               </p>
             </div>
