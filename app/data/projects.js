@@ -20,11 +20,11 @@ export const projects = [
     },
 */
     {
-      title: "Riftforge",
-      description: "Installable PWA web app for Riftbound TCG players. Features include Google/Discord authentication, collection management with Excel import/export, and real-time price tracking via Cardmarket with custom alerts. It offers advanced meta analysis (tier lists, matchup matrices), tournament results, and personal matchup logs.",
+      title: "Riftforge - The Ultimate Riftbound TCG Hub",
+      description: "Riftforge è una PWA (Progressive Web App) avanzata e installabile sviluppata per i giocatori del gioco di carte collezionabili Riftbound TCG. Il progetto funge da hub centrale per la community, offrendo un ecosistema completo per la gestione della propria collezione e l'analisi del meta competitivo.\n\nL'applicazione permette l'autenticazione sicura tramite OAuth (Google/Discord) e integra un sistema di gestione della collezione avanzato con supporto all'importazione ed esportazione rapida tramite file Excel. Una delle funzionalità centrali è il tracciamento in tempo reale dei prezzi delle singole carte tramite integrazione diretta con Cardmarket.\n\n✨ Funzionalità Principali\n- Analisi del Meta & Tornei: Tool avanzati per l'analisi del metagame competitivo, inclusi tier list, tracking dei risultati dei tornei e dashboard statistiche interattive per monitorare i propri matchup (Matchup Matrix).\n- Tracking Prezzi & Mercato: Monitoraggio live delle fluttuazioni di mercato su Cardmarket per ottimizzare gli acquisti e tracciare il valore effettivo della propria collezione nel tempo.\n- Gestione Collezione Avanzata: Import/export massivo da Excel e un'interfaccia intuitiva per gestire le varianti e le quantità possedute.\n- PWA & Architettura Cloud: Architettura serverless moderna basata su Next.js, Prisma e NeonDB (PostgreSQL), completamente installabile come app nativa (PWA) e accessibile fluidamente su smartphone e desktop.\n\n*Il progetto è in continuo sviluppo e si aggiorna mensilmente...*",
       image: "/projects/riftforge.webp",
       slug: "riftforge",
-      technologies: ["Next.js", "Tailwind CSS", "TypeScript", "NeonDB (PostgreSQL)", "PWA"],
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Prisma", "NeonDB (PostgreSQL)", "PWA", "NextAuth"],
       link: "https://riftforge.xyz/"
     },
     {
@@ -33,6 +33,7 @@ export const projects = [
       image: "/projects/la-rustica.webp",
       slug: "la-rustica",
       technologies: ["Next.js", "TypeScript", "React", "Tailwind CSS", "Vercel", "GitHub"],
+      link: "https://la-rustica-app.vercel.app/"
     },
     {
       title: "Hagakure Tattoo Studio - Digital Presence & Booking",
@@ -40,5 +41,14 @@ export const projects = [
       image: "/projects/hagakure.webp",
       slug: "hagakure-tattoo-studio",
       technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "React Hook Form", "Zod", "Nodemailer"],
+      link: "https://hagakure-tattoo-app.vercel.app/"
+    },
+    {
+      title: "🏔️ Vista Majella - B&B Booking & Experience",
+      description: "Vista Majella è una piattaforma web moderna e immersiva sviluppata per un Bed & Breakfast fittizio, situato nel cuore della natura abruzzese. Il progetto nasce per dimostrare la capacità di coniugare un'estetica elegante e accogliente con funzionalità tecniche avanzate orientate all'ospitalità turistica e alberghiera. L'obiettivo principale è offrire un'eccellente esperienza utente (UX) dal primo impatto visivo fino all'esplorazione del sistema simulato di prenotazione.\n\nL'interfaccia utente (UI) è stata progettata con un rigoroso approccio mobile-first, garantendo una navigazione fluida e intuitiva su qualsiasi dispositivo. Le sezioni principali accompagnano armoniosamente il visitatore nella scoperta della struttura: le tipologie di camere, i comfort esclusivi, le attività escursionistiche e la galleria fotografica emozionale.\n\n✨ Funzionalità Principali\n- Sistema di Booking (Mockup): Interfaccia di interazione per la selezione delle date di pernottamento e gestione base della richiesta per simulare con precisione la user flow di prenotazione in un sistema reale.\n- Componenti Interattivi & Animazioni: Implementazione di gallerie immagini dinamiche, caroselli per l'esplorazione delle camere e transizioni fluide allo scroll volte a restituire un feeling premium e rilassante.\n- Design Responsive & UI Accogliente: Layout pulito, altamente accessibile e totalmente ottimizzato. Sviluppato utilizzando Tailwind CSS per richiamare una palette di colori ispirata alla natura, alla montagna e alla serenità.\n- Image Optimization & Performance: Gestione architetturale avanzata dei media tramite CDN e formati web moderni, capace di garantire tempi di caricamento istantanei (LCP ottimizzato) mantenendo un alto impatto visivo.\n- Architettura Scalabile SPA: Progettato sfruttando le ultime tecnologie dell'ecosistema React e Next.js per la costruzione di una solida Single Page Application dalle performance elevate e SEO-friendly.",
+      image: "/projects/vista-majella.png",
+      slug: "vista-majella",
+      technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
+      link: "https://vista-majella.vercel.app/"
     },
   ];

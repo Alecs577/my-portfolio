@@ -1,13 +1,14 @@
 "use client";
 
+import { use } from "react";
 import Link from "next/link";
 import { projects } from "../../data/projects";
 import Header from "../../components/Header";
 import { motion } from "motion/react";
 import Image from "next/image";
 
-export default async function ProjectPage({ params }) {
-  const { slug } = await params;
+export default function ProjectPage({ params }) {
+  const { slug } = use(params);
   const project = projects.find(p => p.slug === slug);
 
   if (!project) {
