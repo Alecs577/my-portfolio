@@ -7,7 +7,7 @@ import SocialLinks from "./SocialLinks";
 
 export default function Hero() {
   return (
-    <section className="min-h-screen flex flex-col justify-center items-center text-center p-8 max-w-4xl mx-auto">
+    <section className="min-h-screen flex flex-col justify-center items-center text-center p-8 pt-24 max-w-4xl mx-auto">
       <motion.div
         initial={{ scale: 0.5, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -19,7 +19,7 @@ export default function Hero() {
           src="/profile.jpg"
           alt="Alex Berardozzi"
           fill
-          className="rounded-full object-cover border-4 border-[var(--card-bg)] shadow-2xl relative z-10"
+          className="rounded-full object-cover object-top border-4 border-[var(--card-bg)] shadow-2xl relative z-10"
           priority
         />
       </motion.div>
@@ -48,7 +48,7 @@ export default function Hero() {
         transition={{ delay: 0.6 }}
         className="text-lg md:text-xl text-[var(--secondary)] max-w-2xl mb-12 leading-relaxed"
       >
-        Passionate about crafting beautiful, functional, and user-centric web experiences. 
+        Passionate about crafting beautiful, functional, and user-centric web experiences.
         Specialized in modern JavaScript frameworks and responsive design.
       </motion.p>
 
