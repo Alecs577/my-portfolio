@@ -36,12 +36,21 @@ export default function Hero() {
           >
             Alex Berardozzi — Full-stack developer, Italy
           </m.span>
-          <SplitText
-            as="span"
-            text="I build web apps from schema to pixel."
-            mode="mount"
-            className="mt-6 block max-w-6xl text-[clamp(3rem,9vw,8.5rem)] font-medium leading-[0.92] tracking-[-0.045em]"
-          />
+          <span className="sr-only">I build web apps from schema to pixel.</span>
+          <span
+            aria-hidden="true"
+            className="mt-6 block max-w-6xl text-[clamp(3rem,8vw,7.5rem)] font-medium leading-[0.92] tracking-[-0.045em]"
+          >
+            <SplitText as="span" text="I build web apps" mode="mount" announce={false} className="block" />
+            <SplitText
+              as="span"
+              text="from schema to pixel."
+              mode="mount"
+              delay={0.24}
+              announce={false}
+              className="block"
+            />
+          </span>
         </h1>
       </m.div>
 

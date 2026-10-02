@@ -34,12 +34,12 @@ export default function About() {
 
       <div className="grid items-start gap-12 md:grid-cols-12 md:gap-16">
         <Reveal className="md:col-span-5">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[4px] bg-surface">
+          <div className="relative aspect-[3/4] overflow-hidden rounded-[4px] bg-surface">
             <Image
               src="/profile.jpg"
               alt="Portrait of Alex Berardozzi"
               fill
-              className="object-cover object-top"
+              className="object-cover object-[center_20%]"
               sizes="(max-width: 768px) 100vw, 40vw"
             />
           </div>
