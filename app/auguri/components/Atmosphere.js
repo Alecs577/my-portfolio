@@ -4,12 +4,13 @@ import { useEffect, useRef } from "react";
 
 function createStars(count, width, height) {
   return Array.from({ length: count }, () => ({
-    x: Math.random() * width,
+        x: Math.random() * width,
     y: Math.random() * height * 0.92,
-    r: Math.random() * 1.25 + 0.2,
+    r: Math.random() * 1.9 + 0.45,
     tw: Math.random() * Math.PI * 2,
     speed: 0.004 + Math.random() * 0.01,
-    alpha: 0.25 + Math.random() * 0.75,
+    alpha: 0.4 + Math.random() * 0.6,
+    glow: Math.random() > 0.78,
   }));
 }
 
@@ -47,11 +48,18 @@ export default function Atmosphere() {
         const twinkle = reduceMotion.current
           ? star.alpha
           : 0.25 + Math.abs(Math.sin(star.tw + time * star.speed)) * star.alpha;
+        if (star.glow) {
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = "rgba(255, 230, 180, 0.9)";
+        } else {
+          ctx.shadowBlur = 0;
+        }
         ctx.beginPath();
-        ctx.fillStyle = `rgba(255, 236, 210, ${twinkle})`;
+        ctx.fillStyle = `rgba(255, 240, 214, ${twinkle})`;
         ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
         ctx.fill();
       }
+      ctx.shadowBlur = 0;
 
       if (!reduceMotion.current) {
         if (!shooting && time - lastSpawn > 4200 + Math.random() * 5000) {
@@ -108,6 +116,7 @@ export default function Atmosphere() {
   return (
     <>
       <div className="auguri-aurora" />
+      <div className="auguri-moon" aria-hidden="true" />
       <canvas ref={canvasRef} className="auguri-canvas" aria-hidden="true" />
       {flies.map((fly, i) => (
         <span

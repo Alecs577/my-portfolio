@@ -42,6 +42,15 @@ export function SceneIntro({ onNext }) {
         Per te<i>.</i>
       </h1>
       <p className="auguri-sub">{CARD.intro.subtitle}</p>
+      <div
+        aria-hidden="true"
+        style={{
+          width: 48,
+          height: 1,
+          margin: "22px auto 0",
+          background: "linear-gradient(90deg, transparent, #f4d58d, transparent)",
+        }}
+      />
       <div className="auguri-pulse" />
       <button type="button" className="auguri-cta" onClick={onNext}>
         {CARD.intro.cta}
@@ -103,7 +112,7 @@ export function SceneEnvelope({ onNext }) {
       >
         <div className={`auguri-envelope${open ? " is-open" : ""}`}>
           <div className="auguri-letter-peek" />
-          <div className="auguri-env-body" />
+          <div className="auguri-env-pocket" />
           <div className="auguri-flap" />
           <div className="auguri-seal">A</div>
         </div>
@@ -118,23 +127,25 @@ export function SceneEnvelope({ onNext }) {
 export function SceneLetter({ name, onNext }) {
   return (
     <motion.section className="auguri-stage" {...fade}>
-      <article className="auguri-paper">
-        <p className="greeting">{CARD.letter.greeting(name)}</p>
-        {CARD.letter.paragraphs.map((text, index) => (
-          <motion.p
-            key={text}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.18 + index * 0.16, duration: 0.6 }}
-          >
-            {text}
-          </motion.p>
-        ))}
-        <p className="closing">{CARD.letter.closing}</p>
+      <div className="auguri-letter-scene">
+        <article className="auguri-paper">
+          <p className="greeting">{CARD.letter.greeting(name)}</p>
+          {CARD.letter.paragraphs.map((text, index) => (
+            <motion.p
+              key={text}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.18 + index * 0.16, duration: 0.6 }}
+            >
+              {text}
+            </motion.p>
+          ))}
+          <p className="closing">{CARD.letter.closing}</p>
+        </article>
         <button type="button" className="auguri-cta" onClick={onNext}>
           {CARD.letter.continue}
         </button>
-      </article>
+      </div>
     </motion.section>
   );
 }
@@ -164,11 +175,11 @@ export function SceneWishes({ onNext }) {
             <button
               key={wish}
               type="button"
-              className={`auguri-wish${wide ? " is-wide" : ""}`}
+              className={`auguri-wish${wide ? " is-wide" : ""}${isOpen ? " is-open" : ""}`}
               onClick={() => toggle(index)}
             >
               <span className="star">{isOpen ? "✦" : "✧"}</span>
-              {isOpen ? wish : "un desiderio"}
+              {isOpen ? wish : "tocca"}
             </button>
           );
         })}
@@ -204,7 +215,7 @@ function Confetti() {
         delay: (i % 8) * 0.18,
         dur: 5.5 + (i % 5) * 0.4,
         color: ["#f4d58d", "#ffc2d4", "#ffe7b3", "#d7b4ff", "#fff6e8"][i % 5],
-        size: 5 + (i % 4) * 2,
+        size: 7 + (i % 4) * 3,
       })),
     []
   );
@@ -239,7 +250,7 @@ export function SceneFinale({ name, onReplay }) {
     <motion.section className="auguri-stage" {...fade}>
       <Confetti />
       <p className="auguri-kicker">{CARD.finale.kicker}</p>
-      <h1 className="auguri-title">
+      <h1 className="auguri-title auguri-title-glow">
         {CARD.finale.title}
         {name ? (
           <>
@@ -251,19 +262,18 @@ export function SceneFinale({ name, onReplay }) {
         )}
       </h1>
       <p className="auguri-sub">{CARD.finale.afterName}</p>
-      <div style={{ height: 120, position: "relative", width: "100%", marginTop: 10 }}>
-        <AnimatePresence>
-          {released && (
-            <motion.div
-              className="auguri-lantern"
-              initial={{ y: 40, opacity: 0, scale: 0.8 }}
-              animate={{ y: -220, opacity: [0, 1, 1, 0], scale: 0.7 }}
-              transition={{ duration: 3.6, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="auguri-lantern-body" />
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div style={{ height: 140, position: "relative", width: "100%", marginTop: 4 }}>
+        <motion.div
+          className="auguri-lantern"
+          animate={
+            released
+              ? { y: -240, opacity: [1, 1, 0], scale: 0.7 }
+              : { y: 0, opacity: 1, scale: 1 }
+          }
+          transition={{ duration: released ? 3.4 : 0.4, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="auguri-lantern-body" />
+        </motion.div>
       </div>
       <button
         type="button"
