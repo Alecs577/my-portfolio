@@ -372,8 +372,11 @@ body:has(.auguri-root) {
   box-shadow:
     0 20px 50px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(255, 255, 255, 0.08);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(138, 75, 47, 0.35) transparent;
+  scrollbar-width: none;
+}
+
+.auguri-paper::-webkit-scrollbar {
+  display: none;
 }
 
 .auguri-paper p {

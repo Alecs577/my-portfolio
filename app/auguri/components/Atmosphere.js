@@ -105,12 +105,12 @@ export default function Atmosphere() {
   }, []);
 
   const flies = [
-    { top: "18%", left: "12%", dur: "10s" },
-    { top: "28%", left: "78%", dur: "13s" },
-    { top: "62%", left: "18%", dur: "12s" },
-    { top: "70%", left: "84%", dur: "9s" },
-    { top: "44%", left: "50%", dur: "14s" },
-    { top: "80%", left: "40%", dur: "11s" },
+    { top: "14%", left: "10%", dur: "10s" },
+    { top: "22%", left: "84%", dur: "13s" },
+    { top: "72%", left: "8%", dur: "12s" },
+    { top: "80%", left: "88%", dur: "9s" },
+    { top: "90%", left: "28%", dur: "14s" },
+    { top: "8%", left: "38%", dur: "11s" },
   ];
 
   return (
