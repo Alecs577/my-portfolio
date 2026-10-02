@@ -1,99 +1,125 @@
-"use client";
-
-import { use } from "react";
-import Link from "next/link";
-import { projects } from "../../data/projects";
-import Header from "../../components/Header";
-import { motion } from "motion/react";
 import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getNextProject, getProject, projects } from "../../data/projects";
+import Reveal from "../../components/motion/Reveal";
+import SplitText from "../../components/motion/SplitText";
+import ScrollProgress from "../../components/ScrollProgress";
 
-export default function ProjectPage({ params }) {
-  const { slug } = use(params);
-  const project = projects.find(p => p.slug === slug);
+export function generateStaticParams() {
+  return projects.map((project) => ({ slug: project.slug }));
+}
 
-  if (!project) {
-    return (
-      <main className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-[var(--foreground)] mb-4">Project not found</h1>
-          <Link href="/" className="text-[var(--primary)] hover:underline">
-            Return to Home
-          </Link>
-        </div>
-      </main>
-    );
-  }
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const project = getProject(slug);
+  if (!project) return {};
+
+  return {
+    title: project.name,
+    description: project.summary,
+    openGraph: {
+      title: project.name,
+      description: project.summary,
+      images: [project.image],
+    },
+  };
+}
+
+export default async function ProjectPage({ params }) {
+  const { slug } = await params;
+  const project = getProject(slug);
+  if (!project) notFound();
+
+  const next = getNextProject(slug);
 
   return (
-    <>
-      <Header />
-      <main className="min-h-screen pt-24 pb-16 px-8">
-        <div className="max-w-4xl mx-auto">
-          <Link href="/#projects">
-            <motion.button
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="mb-8 px-4 py-2 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--secondary)] hover:text-[var(--primary)] transition-colors flex items-center gap-2"
-            >
-              ← Back to Projects
-            </motion.button>
-          </Link>
+    <article className="mx-auto max-w-4xl px-5 pb-28 pt-28 md:px-10 md:pb-40">
+      <ScrollProgress />
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <h1 className="text-5xl font-bold text-[var(--foreground)] mb-6">
-              {project.title}
-            </h1>
+      <Link
+        href="/#work"
+        className="text-sm text-muted transition-colors hover:text-fg"
+      >
+        ← All work
+      </Link>
 
-            <div className="relative w-full h-[400px] rounded-2xl overflow-hidden mb-8 border border-[var(--card-border)]">
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
+      <SplitText
+        as="h1"
+        text={project.name}
+        mode="mount"
+        className="mt-8 block text-[clamp(2.25rem,5vw,4.5rem)] font-medium leading-[0.95] tracking-[-0.035em]"
+      />
 
-            <div className="glass p-8 rounded-2xl mb-8">
-              <h2 className="text-2xl font-bold text-[var(--foreground)] mb-4">About</h2>
-              <p className="text-[var(--secondary)] text-lg leading-relaxed whitespace-pre-wrap">
-                {project.description}
-              </p>
-            </div>
+      <p className="mt-6 font-mono text-xs uppercase tracking-[0.08em] text-muted">
+        {project.kind} · {project.status}
+      </p>
 
-            <div className="glass p-8 rounded-2xl mb-8">
-              <h2 className="text-2xl font-bold text-[var(--foreground)] mb-4">Technologies</h2>
-              <div className="flex flex-wrap gap-3">
-                {project.technologies?.map((tech, idx) => (
-                  <span
-                    key={idx}
-                    className="px-4 py-2 bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--secondary)] rounded-full text-sm font-semibold"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {project.link && (
-              <motion.a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-block px-8 py-4 bg-[var(--primary)] text-white rounded-xl font-bold hover:brightness-110 transition shadow-lg"
-              >
-                Visit Project →
-              </motion.a>
-            )}
-          </motion.div>
+      <dl className="mt-10 grid gap-6 border-y border-line py-8 sm:grid-cols-2">
+        <div>
+          <dt className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Type</dt>
+          <dd className="mt-2">{project.kind}</dd>
         </div>
-      </main>
-    </>
+        <div>
+          <dt className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Status</dt>
+          <dd className="mt-2">{project.status}</dd>
+        </div>
+        <div>
+          <dt className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Stack</dt>
+          <dd className="mt-2 text-sm text-muted">{project.stack.join(" · ")}</dd>
+        </div>
+        <div>
+          <dt className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Live site</dt>
+          <dd className="mt-2">
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-accent"
+            >
+              Visit project ↗
+            </a>
+          </dd>
+        </div>
+      </dl>
+
+      <div className="relative mt-10 aspect-[16/10] overflow-hidden rounded-[4px] bg-surface">
+        <Image
+          src={project.image}
+          alt={`Screenshot of ${project.name}`}
+          fill
+          priority
+          className="object-cover"
+          sizes="(max-width: 896px) 100vw, 896px"
+        />
+      </div>
+
+      <Reveal>
+        <p className="mt-12 text-lg text-muted">{project.summary}</p>
+      </Reveal>
+
+      <ol className="mt-12 space-y-6">
+        {project.highlights.map((item, index) => (
+          <Reveal as="li" key={item} delay={index * 0.05} className="flex gap-4 border-t border-line pt-6">
+            <span className="font-mono text-xs text-muted">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <p>{item}</p>
+          </Reveal>
+        ))}
+      </ol>
+
+      {next ? (
+        <div className="mt-20 border-t border-line pt-10">
+          <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Next project</p>
+          <Link
+            href={`/projects/${next.slug}`}
+            className="mt-3 inline-block text-3xl font-medium tracking-tight hover:text-accent"
+          >
+            {next.name} →
+          </Link>
+        </div>
+      ) : null}
+    </article>
   );
 }

@@ -1,38 +1,26 @@
-"use client";
+import { SITE } from "../data/site";
 
-import { motion } from "motion/react";
-import { FaLinkedin, FaGithub } from "react-icons/fa";
+const links = [
+  { href: SITE.github, label: "GitHub" },
+  { href: SITE.linkedin, label: "LinkedIn" },
+];
 
-export default function SocialLinks() {
-  const icons = [
-    {
-      component: <FaLinkedin />,
-      href: "https://www.linkedin.com/in/alex-berardozzi-31449921a/",
-      label: "LinkedIn"
-    },
-    {
-      component: <FaGithub />,
-      href: "https://github.com/Alecs577",
-      label: "GitHub"
-    }
-  ];
-
+export default function SocialLinks({ className = "" }) {
   return (
-    <div className="flex gap-6 mx-auto">
-      {icons.map((icon, idx) => (
-        <motion.a
-          key={idx}
-          href={icon.href}
+    <div className={`flex flex-wrap gap-6 ${className}`}>
+      {links.map((link) => (
+        <a
+          key={link.label}
+          href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-4xl text-[var(--secondary)] hover:text-[var(--accent)] transition-colors duration-300"
-          aria-label={icon.label}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 5 + idx * 0.3 }}
+          className="group text-sm text-fg transition-colors duration-200 hover:text-accent"
         >
-          {icon.component}
-        </motion.a>
+          {link.label}{" "}
+          <span className="inline-block transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+            ↗
+          </span>
+        </a>
       ))}
     </div>
   );
