@@ -1,62 +1,83 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #18181b; /* zinc-900 */
-  --card-bg: #f4f4f5; /* zinc-100 */
-  --card-border: #e4e4e7; /* zinc-200 */
-  --primary: #7c3aed; /* violet-600 */
-  --secondary: #71717a; /* zinc-500 */
-  --accent: #db2777; /* pink-600 */
+  --bg: #fafaf9;
+  --surface: #f2f2f0;
+  --line: #e7e5e4;
+  --fg: #0a0a0a;
+  --muted: #6b6b6b;
+  --accent: #c2410c;
+  --accent-fg: #ffffff;
 }
 
 .dark {
-  --background: #09090b; /* zinc-950 */
-  --foreground: #fafafa; /* zinc-50 */
-  --card-bg: #18181b; /* zinc-900 */
-  --card-border: #27272a; /* zinc-800 */
-  --primary: #8b5cf6; /* violet-500 */
-  --secondary: #a1a1aa; /* zinc-400 */
-  --accent: #f472b6; /* pink-400 */
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --line: #1f1f1f;
+  --fg: #ededed;
+  --muted: #8f8f8f;
+  --accent: #ff6a3d;
+  --accent-fg: #0a0a0a;
 }
 
-.font-mono-jb {
-  font-family: var(--font-jetbrains-mono), monospace;
-}
-
-.font-sans-figtree {
-  font-family: var(--font-figtree), sans-serif;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
   --color-accent: var(--accent);
-  --color-card-bg: var(--card-bg);
-  --color-card-border: var(--card-border);
-  --font-sans: var(--font-figtree);
-  --font-mono: var(--font-jetbrains-mono);
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  --color-accent-fg: var(--accent-fg);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 html {
-  scroll-behavior: smooth;
+  background: var(--bg);
 }
 
-.glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
-.dark .glass {
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+section[id] {
+  scroll-margin-top: 6rem;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  background: var(--accent);
+  color: var(--accent-fg);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.skip-link:focus {
+  top: 1rem;
 }

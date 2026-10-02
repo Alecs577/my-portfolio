@@ -1,18 +1,33 @@
 "use client";
 
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
+import { FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "./ThemeProvider";
-import { FaSun, FaMoon } from "react-icons/fa";
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
     <button
+      type="button"
       onClick={toggleTheme}
-      className="p-3 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-all hover:scale-110 active:scale-95 shadow-md flex items-center justify-center"
-      aria-label="Toggle Theme"
+      className="relative flex h-11 w-11 items-center justify-center text-fg"
+      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
     >
-      {theme === "dark" ? <FaSun className="w-5 h-5" /> : <FaMoon className="w-5 h-5" />}
+      <AnimatePresence mode="wait" initial={false}>
+        <m.span
+          key={isDark ? "sun" : "moon"}
+          initial={{ opacity: 0, rotate: -90 }}
+          animate={{ opacity: 1, rotate: 0 }}
+          exit={{ opacity: 0, rotate: 90 }}
+          transition={{ duration: 0.25 }}
+          className="absolute"
+        >
+          {isDark ? <FiSun className="h-5 w-5" /> : <FiMoon className="h-5 w-5" />}
+        </m.span>
+      </AnimatePresence>
     </button>
   );
 }

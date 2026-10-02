@@ -1,126 +1,166 @@
 "use client";
 
 import { useState } from "react";
-import emailjs from "@emailjs/browser";
-import { motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
+import Magnetic from "./motion/Magnetic";
+import SectionHeading from "./SectionHeading";
+import SocialLinks from "./SocialLinks";
+
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+const labels = {
+  idle: "Send message",
+  sending: "Sending…",
+  sent: "Sent",
+  error: "Send message",
+};
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [status, setStatus] = useState("idle");
 
   const validate = () => {
-    const newErrors = {};
-    if (!form.name.trim()) newErrors.name = "Name is required";
-    if (!form.email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)) newErrors.email = "Invalid email";
-    if (!form.message.trim()) newErrors.message = "Message cannot be empty";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const next = {};
+    if (!form.name.trim()) next.name = "Add your name.";
+    if (!EMAIL.test(form.email)) next.email = "That email doesn't look right.";
+    if (!form.message.trim()) next.message = "Write a short message.";
+    setErrors(next);
+    return Object.keys(next).length === 0;
   };
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setForm((current) => ({ ...current, [name]: value }));
+    setErrors((current) => ({ ...current, [name]: "" }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     if (!validate()) return;
 
-    setLoading(true);
+    setStatus("sending");
     try {
+      const emailjs = (await import("@emailjs/browser")).default;
       await emailjs.send(
         "service_mb1cynr",
         "template_shagx2k",
         form,
         "c3cnRpbsEZUwJdMLY"
       );
-      setSuccess(true);
+      setStatus("sent");
       setForm({ name: "", email: "", message: "" });
-      setTimeout(() => setSuccess(false), 5000);
-    } catch (error) {
-      console.error(error);
-      alert("Failed to send message, try again later.");
+    } catch {
+      setStatus("error");
     }
-    setLoading(false);
   };
 
   return (
-    <section id="contact" className="py-20 px-8 max-w-4xl mx-auto">
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="glass p-8 md:p-12 rounded-3xl text-center"
-      >
-        <h2 className="text-4xl font-bold mb-6 text-[var(--foreground)]">Get In Touch</h2>
-        <p className="text-[var(--secondary)] mb-8">Have a project in mind or just want to say hi? Send me a message!</p>
+    <section id="contact" className="mx-auto max-w-7xl px-5 py-28 md:px-10 md:py-40">
+      <SectionHeading
+        index="05"
+        label="Contact"
+        title="Have something that needs to ship?"
+        intro="Tell me what you're building, where it's stuck, or the role you're hiring for. I read every message and reply personally."
+      />
 
-        {success && (
-            <motion.div 
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-4 bg-green-500/10 text-green-500 rounded-xl"
-            >
-                Message sent successfully!
-            </motion.div>
-        )}
+      <div className="grid gap-16 md:grid-cols-12">
+        <form onSubmit={handleSubmit} className="space-y-10 md:col-span-8" noValidate>
+          {status === "sent" ? (
+            <p role="status" className="text-sm text-fg">
+              Thanks — your message is in. I&apos;ll get back to you soon.
+            </p>
+          ) : null}
+          {status === "error" ? (
+            <p role="alert" className="text-sm text-accent">
+              Something went wrong and the message wasn&apos;t sent. Try again, or reach me on LinkedIn.
+            </p>
+          ) : null}
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6 text-left">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-semibold text-[var(--secondary)]">Name</span>
+          <div className="grid gap-10 sm:grid-cols-2">
+            <label className="block">
+              <span className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Name</span>
               <input
                 name="name"
+                autoComplete="name"
                 value={form.name}
                 onChange={handleChange}
-                className={`px-4 py-3 rounded-xl bg-[var(--background)] border ${
-                  errors.name ? "border-red-500" : "border-[var(--card-border)]"
-                } focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
-                placeholder="John Doe"
+                aria-invalid={Boolean(errors.name)}
+                aria-describedby={errors.name ? "name-error" : undefined}
+                className="mt-3 w-full border-0 border-b border-line bg-transparent py-3 text-fg transition-colors focus:border-accent"
               />
-              {errors.name && <span className="text-red-500 text-xs">{errors.name}</span>}
+              {errors.name ? (
+                <span id="name-error" className="mt-2 block text-xs text-accent">
+                  {errors.name}
+                </span>
+              ) : null}
             </label>
 
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-semibold text-[var(--secondary)]">Email</span>
+            <label className="block">
+              <span className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Email</span>
               <input
+                type="email"
                 name="email"
+                autoComplete="email"
                 value={form.email}
                 onChange={handleChange}
-                className={`px-4 py-3 rounded-xl bg-[var(--background)] border ${
-                  errors.email ? "border-red-500" : "border-[var(--card-border)]"
-                } focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all`}
-                placeholder="john@example.com"
+                aria-invalid={Boolean(errors.email)}
+                aria-describedby={errors.email ? "email-error" : undefined}
+                className="mt-3 w-full border-0 border-b border-line bg-transparent py-3 text-fg transition-colors focus:border-accent"
               />
-              {errors.email && <span className="text-red-500 text-xs">{errors.email}</span>}
+              {errors.email ? (
+                <span id="email-error" className="mt-2 block text-xs text-accent">
+                  {errors.email}
+                </span>
+              ) : null}
             </label>
           </div>
 
-          <label className="flex flex-col gap-2">
-            <span className="text-sm font-semibold text-[var(--secondary)]">Message</span>
+          <label className="block">
+            <span className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Message</span>
             <textarea
               name="message"
               value={form.message}
               onChange={handleChange}
-              className={`px-4 py-3 rounded-xl bg-[var(--background)] border ${
-                errors.message ? "border-red-500" : "border-[var(--card-border)]"
-              } focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all h-32 resize-none`}
-              placeholder="Tell me about your project..."
+              aria-invalid={Boolean(errors.message)}
+              aria-describedby={errors.message ? "message-error" : undefined}
+              rows={5}
+              className="mt-3 w-full resize-none border-0 border-b border-line bg-transparent py-3 text-fg transition-colors focus:border-accent"
             />
-            {errors.message && <span className="text-red-500 text-xs">{errors.message}</span>}
+            {errors.message ? (
+              <span id="message-error" className="mt-2 block text-xs text-accent">
+                {errors.message}
+              </span>
+            ) : null}
           </label>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="mt-4 px-8 py-4 bg-[var(--primary)] text-white rounded-xl font-bold hover:brightness-110 transition disabled:opacity-50 shadow-lg hover:shadow-[var(--primary)]/30"
-          >
-            {loading ? "Sending..." : "Send Message"}
-          </button>
+          <Magnetic className="inline-block">
+            <button
+              type="submit"
+              disabled={status === "sending"}
+              className="inline-flex h-12 min-w-40 items-center justify-center rounded-full bg-accent px-8 text-sm font-medium text-accent-fg disabled:opacity-60"
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                <m.span
+                  key={status}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {labels[status]}
+                </m.span>
+              </AnimatePresence>
+            </button>
+          </Magnetic>
         </form>
-      </motion.div>
+
+        <div className="md:col-span-4">
+          <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Elsewhere</p>
+          <SocialLinks className="mt-4 flex-col gap-3" />
+        </div>
+      </div>
     </section>
   );
 }
